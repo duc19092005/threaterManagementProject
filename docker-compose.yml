@@ -1,0 +1,37 @@
+services :
+  backend : 
+    build : ./api/backend
+    ports :
+      - "5000:5000"
+    volumes :
+      - backenddata:/var/opt/backendData
+    depends_on :
+      - mssql
+    networks :
+      - productionNetwork
+  frontend :
+    build : ./webfrontend
+    ports :
+      - "3000:3000"
+    volumes :
+      - frontenddata:/var/opt/frontendData
+    networks :
+      - productionNetwork
+  mssql :
+    image : mcr.microsoft.com/mssql/server:2019-latest
+    volumes : 
+      - sqldata:/var/opt/mssql
+    ports :
+      - "443:443"
+    environment :
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=anhduc9A@5
+    networks :
+      - productionNetwork
+
+networks:
+  productionNetwork:
+volumes:
+  sqldata:
+  backenddata:
+  frontenddata:

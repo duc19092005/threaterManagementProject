@@ -1,6 +1,6 @@
 FROM node:22-alpine
 
-WORKDIR webApplication 
+WORKDIR webfrontend
 
 COPY package*.json ./
 
