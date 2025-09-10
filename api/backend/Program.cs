@@ -1,7 +1,6 @@
 using backend.bootstrapping;
 
 var builder = WebApplication.CreateBuilder(args);
-
 // Add services to the container.
 builder.Services.connectToDatabase(builder.Configuration);
 // Add JWT Config
@@ -15,6 +14,11 @@ builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
 
+
+// Add Policy Config
+
+builder.Services.ConfigurePolicyAuth();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -25,9 +29,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.middlewareConfigHelper();
 app.UseAuthorization();
-
+// Config Middleware checker
 app.MapControllers();
 
 app.Run();

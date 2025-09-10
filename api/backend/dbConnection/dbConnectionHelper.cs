@@ -11,5 +11,5 @@ public class dbConnectionHelper : DbContext
         
     }
 
-    private DbSet<userModel> userModel {get; set;}
+    public  DbSet<userModel> userModel {get; set;}
 }

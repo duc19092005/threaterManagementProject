@@ -20,7 +20,7 @@ public static class jwtConfig
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     ValidIssuer = configuration["Jwt:iss"],
-                    ValidAudience = configuration["configuration:aud"],
+                    ValidAudience = configuration["Jwt:aud"],
                     IssuerSigningKey =
                         new SymmetricSecurityKey(UTF8Encoding.UTF8.GetBytes(configuration["Jwt:secretKey"]))
                 };
