@@ -1,5 +1,5 @@
 using backend.helper;
-using backend.services.AuthServices;
+using BussinessLogic.services.AuthServices;
 
 namespace backend.bootstrapping;
 

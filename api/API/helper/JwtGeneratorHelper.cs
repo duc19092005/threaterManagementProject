@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Text;
 using backend.response.AuthResponse;
 using Microsoft.IdentityModel.Tokens;
+using BussinessLogic.Result;
 
 namespace backend.helper;
 
@@ -14,8 +15,8 @@ public class JwtGeneratorHelper
     {
         _configuration = configuration;
     }
-    public AuthResponseMessage GenerateToken(string userId ,
-        string userName , string [] roles 
+    public AuthResponseMessage GenerateToken(AuthenticatedResult 
+        authenticatedResult
         )
     {
         // _configuration["Jwt:secretKey"], _configuration["Jwt:iss"], _configuration["Jwt:aud"]
@@ -25,11 +26,11 @@ public class JwtGeneratorHelper
         // Generate Claims Payload
         var userClaims = new  List<Claim>()
         {
-            new Claim(ClaimTypes.Email, userName),
-            new Claim(ClaimTypes.NameIdentifier, userId)
+            new Claim(ClaimTypes.Email, authenticatedResult.username),
+            new Claim(ClaimTypes.NameIdentifier, authenticatedResult.userId)
         };
 
-        foreach (var role in roles)
+        foreach (var role in authenticatedResult.roles)
         {
             userClaims.Add(new Claim(ClaimTypes.Role, role));
         }
