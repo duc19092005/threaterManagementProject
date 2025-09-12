@@ -10,7 +10,7 @@ using backend.dbConnection;
 
 namespace backend.Migrations
 {
-    [DbContext(typeof(dbConnectionHelper))]
+    [DbContext(typeof(threaterManagementDbContext))]
     [Migration("20250903070540_Initial")]
     partial class Initial
     {

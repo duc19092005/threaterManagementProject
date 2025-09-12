@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace backend.dbConnection;
 
-public class dbConnectionHelper : DbContext
+public class threaterManagementDbContext : DbContext
 {
-    public dbConnectionHelper(DbContextOptions<dbConnectionHelper> options) : base(options)
+    public threaterManagementDbContext(DbContextOptions<threaterManagementDbContext> options) : base(options)
     {
         
     }

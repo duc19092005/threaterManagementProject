@@ -9,7 +9,7 @@ using backend.dbConnection;
 
 namespace backend.Migrations
 {
-    [DbContext(typeof(dbConnectionHelper))]
+    [DbContext(typeof(threaterManagementDbContext))]
     partial class dbConnectionHelperModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

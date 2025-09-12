@@ -9,6 +9,6 @@ public static class databaseConnect
     {
         
         services.AddDbContext
-            <dbConnectionHelper>(options => options.UseSqlServer(configuration["MSSQL:connectString"]));
+            <threaterManagementDbContext>(options => options.UseSqlServer(configuration["MSSQL:connectString"]));
     }
 }
