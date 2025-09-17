@@ -10,6 +10,10 @@ builder.Services.AddDIConfig();
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options => options.AddPolicy("AllowLocalHost3000", policyBuilder =>
+{
+    policyBuilder.WithOrigins("http://localhost:3000").AllowAnyMethod().AllowAnyHeader();
+}));
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen();
@@ -20,6 +24,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.ConfigurePolicyAuth();
 
 var app = builder.Build();
+app.UseCors("AllowLocalHost3000");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
