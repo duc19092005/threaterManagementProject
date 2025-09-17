@@ -10,7 +10,7 @@ public class AuthenticatedResult
     {
         
     }
-    public AuthenticatedResult(string userId, string username, string[] roles)
+    public AuthenticatedResult(string userId, string username, string?[] roles)
     {
         this.userId = userId;
         this.username = username;

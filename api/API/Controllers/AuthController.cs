@@ -10,7 +10,7 @@ using BussinessLogic.services.AuthServices;
 namespace backend.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public class AuthController : ControllerBase
 {
     // Get Services
@@ -26,23 +26,27 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(loginDto loginDto)
+    public async Task<IActionResult> Login(loginDto loginDto)
     {
         try
         {
-            var loginStatus = _authService.LoginService(loginDto);
-            
+            var loginStatus = await _authService.LoginService(loginDto);
+
             // Generate Token
 
             var generateJwtToken =
                 _jwtGeneratorHelper.GenerateToken
                     (loginStatus);
-            
-            return Ok(generateJwtToken);
+            var returnStatus 
+                = GenericResponse<AuthResponseMessage>.LoginSuccessfully(generateJwtToken
+                , new string[] {"Add Links In Here"});
+            return Ok(returnStatus);
         }
-        catch (AuthenticationException ex)
+        catch (AuthException ex)
         {
-            return NotFound(ex.Message);
+            var FailureStatus =
+                GenericResponse<AuthenticationException>.LoginFailure(ex.Message);
+            return NotFound(FailureStatus);
         }
         
     }

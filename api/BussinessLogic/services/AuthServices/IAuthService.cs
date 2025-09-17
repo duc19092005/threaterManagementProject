@@ -5,7 +5,7 @@ namespace BussinessLogic.services.AuthServices;
 
 public interface IAuthService
 {
-    public AuthenticatedResult LoginService(
+    public Task<AuthenticatedResult> LoginService(
         loginDto loginDto
         );
 
