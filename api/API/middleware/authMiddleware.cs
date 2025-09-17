@@ -15,7 +15,7 @@ public class authMiddleware
     {
         var ignorePath = new List<string>()
         {
-            "/api/Auth/login"
+            "/api/v1/Auth/login"
         };
         
         Console.WriteLine(context.Request.Path);
