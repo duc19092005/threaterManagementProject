@@ -1,10 +1,10 @@
 using System.Data;
-using backend.model;
+using DataAccess.model;
 using DevOne.Security.Cryptography.BCrypt;
 using Microsoft.EntityFrameworkCore;
 using BCrypt.Net;
 
-namespace backend.dbConnection;
+namespace DataAccess.dbConnection;
 
 public class threaterManagementDbContext : DbContext
 {
@@ -18,6 +18,9 @@ public class threaterManagementDbContext : DbContext
     public DbSet<userRoleModel> userRole {get; set;} = null!;
     
     public DbSet<roleModel> Role {get; set;} = null!;
+    
+    public DbSet<userModel> userModel {get; set;} = null!;
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

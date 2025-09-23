@@ -1,14 +1,17 @@
 services :
   backend : 
-    build : ./api/backend
+    build : ./api
     ports :
-      - "5000:5000"
+      - "5000:8080"
+      - "5001:8081"
     volumes :
       - backenddata:/var/opt/backendData
     depends_on :
       - mssql
     networks :
       - productionNetwork
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
   frontend :
     build : ./webfrontend
     ports :
@@ -22,7 +25,7 @@ services :
     volumes : 
       - sqldata:/var/opt/mssql
     ports :
-      - "443:443"
+      - "1433:1433"
     environment :
       - ACCEPT_EULA=Y
       - SA_PASSWORD=anhduc9A@5

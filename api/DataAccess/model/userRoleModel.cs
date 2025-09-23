@@ -1,7 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
-namespace backend.model;
+namespace DataAccess.model;
 
 public partial class userRoleModel
 {

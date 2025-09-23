@@ -1,4 +1,4 @@
-namespace backend.model;
+namespace DataAccess.model;
 
 public class timerBaseModel
 {
