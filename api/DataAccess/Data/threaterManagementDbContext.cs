@@ -18,6 +18,7 @@ public class threaterManagementDbContext : DbContext
     public DbSet<userRoleModel> userRole {get; set;} = null!;
     
     public DbSet<roleModel> Role {get; set;} = null!;
+    
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,6 +1,6 @@
 services :
   backend : 
-    build : ./api/backend
+    build : ./api
     ports :
       - "5000:5000"
     volumes :
@@ -9,6 +9,8 @@ services :
       - mssql
     networks :
       - productionNetwork
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
   frontend :
     build : ./webfrontend
     ports :
