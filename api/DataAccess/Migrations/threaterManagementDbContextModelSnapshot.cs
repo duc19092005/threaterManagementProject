@@ -35,15 +35,15 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("fullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("identityNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(150)");
 
                     b.Property<string>("phoneNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("char(10)");
 
                     b.Property<DateTime>("updatedAt")
                         .HasColumnType("datetime2");
@@ -126,7 +126,7 @@ namespace DataAccess.Migrations
                         new
                         {
                             userId = "c23a5fa3-ba26-480a-b16c-55cab199e275",
-                            password = "$2a$11$0mufpUUygE3jSNYUKm4f6uj1m3jI7/RlN0MJirBjzuFxdd6iBjZLK",
+                            password = "$2a$12$1tgBNJ1EmtZUNxUHp9bFsOi0ey/5efl4rO7anhFjP.TDQ3VBbr8du",
                             username = "duc19092005@email.com"
                         });
                 });

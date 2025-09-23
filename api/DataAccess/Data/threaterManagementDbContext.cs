@@ -69,16 +69,13 @@ public class threaterManagementDbContext : DbContext
             
         // Add A New User
         var newUserId = "c23a5fa3-ba26-480a-b16c-55cab199e275";
-            
-        var generateBcryptHashPassword =  
-            BCrypt.Net.BCrypt.HashPassword("anhduc9a5");
 
         modelBuilder.Entity<userModel>().HasData
             (new userModel()
             {
                 userId = newUserId,
                 username = "duc19092005@email.com",
-                password = generateBcryptHashPassword,
+                password = "$2a$12$1tgBNJ1EmtZUNxUHp9bFsOi0ey/5efl4rO7anhFjP.TDQ3VBbr8du",
             });
         // Add new User Role
         modelBuilder.Entity<userRoleModel>().HasData
