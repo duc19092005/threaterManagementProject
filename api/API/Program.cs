@@ -1,5 +1,5 @@
 using backend.bootstrapping;
-using backend.dbConnection;
+using DataAccess.dbConnection;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);

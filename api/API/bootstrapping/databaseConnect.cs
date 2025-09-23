@@ -1,4 +1,4 @@
-using backend.dbConnection;
+using DataAccess.dbConnection;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.bootstrapping;
