@@ -23,12 +23,12 @@ public class threaterManagementDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder); 
         
-        var directorId = Guid.NewGuid().ToString();
-        var customerId = Guid.NewGuid().ToString();
-        var cashierId = Guid.NewGuid().ToString();
-        var threaterManagerId = Guid.NewGuid().ToString();
-        var systemManagerId = Guid.NewGuid().ToString();
-        var movieManagerId = Guid.NewGuid().ToString();
+        var directorId = "6ae7fd25-7abc-4886-b3d2-7a6bffbbb62b";
+        var customerId = "b6bc151a-b4b4-41d6-bae4-62ce5627be2f";
+        var cashierId = "e6380167-8440-4762-b386-3cfa5f0ac9fa";
+        var threaterManagerId = "efcddae9-75cf-40e0-be76-8226ea26664e";
+        var systemManagerId = "fe4b6c29-b60f-4ea4-a2b8-4b9d6a1c2300";
+        var movieManagerId = "77fa1f11-3481-451a-8eba-2586d519f56d";
 
         modelBuilder.Entity<roleModel>().HasData
             (
@@ -68,7 +68,7 @@ public class threaterManagementDbContext : DbContext
             );
             
         // Add A New User
-        var newUserId = Guid.NewGuid().ToString();
+        var newUserId = "c23a5fa3-ba26-480a-b16c-55cab199e275";
             
         var generateBcryptHashPassword =  
             BCrypt.Net.BCrypt.HashPassword("anhduc9a5");

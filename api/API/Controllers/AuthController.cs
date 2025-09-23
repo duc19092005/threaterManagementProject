@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using BussinessLogic.customException;
 using BussinessLogic.dtos;
 using BussinessLogic.services.AuthServices;
+using Microsoft.AspNetCore.Authorization;
 
 namespace backend.Controllers;
 
@@ -49,5 +50,12 @@ public class AuthController : ControllerBase
             return NotFound(FailureStatus);
         }
         
+    }
+
+    [Authorize(Policy = "CustomerOnly")]
+    [HttpGet("customers")]
+    public IActionResult GetCustomers()
+    {
+        return Ok();
     }
 }
