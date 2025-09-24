@@ -28,8 +28,7 @@ public class threaterManagementDbContext : DbContext
     
     public DbSet<roleModel> Role {get; set;} = null!;
     
-    public DbSet<userModel> userModel {get; set;} = null!;
-    
+    public DbSet<customerModel> Customer {get; set;} = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

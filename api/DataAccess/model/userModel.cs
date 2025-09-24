@@ -19,4 +19,6 @@ public class userModel
     public string password { get; set; } = string.Empty;
 
     public List<userRoleModel> userRoleModel { get; set; } = null!;
+    
+    public customerModel customerModel { get; set; } = null!;
 }
