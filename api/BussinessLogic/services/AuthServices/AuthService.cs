@@ -3,6 +3,7 @@ using BussinessLogic.customException;
 using BussinessLogic.dtos;
 using BussinessLogic.Result;
 using DataAccess.dbConnection;
+using DataAccess.model;
 using DevOne.Security.Cryptography.BCrypt;
 using Microsoft.EntityFrameworkCore;
 
@@ -53,6 +54,75 @@ public class AuthService : IAuthService
         }else
         {
             throw new AuthException("Invalid username or password");
+        }
+    }
+
+    public async Task<RegisterResult> RegisterService(registerDto registerDto)
+    {
+        try
+        {
+            var existingUser = await _context.User.FirstOrDefaultAsync(x => x.username.Equals(registerDto.username));
+            
+            if (existingUser != null)
+            {
+                return RegisterResult.Failure("Username already exists");
+            }
+
+            var newUserId = Guid.NewGuid().ToString();
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerDto.password);
+            var hashedIdentityNumber = BCrypt.Net.BCrypt.HashPassword(registerDto.IdentityNumber);
+
+            var newUser = new userModel
+            {
+                userId = newUserId,
+                username = registerDto.username,
+                password = hashedPassword
+            };
+
+            var newcustomer = new customerModel
+            {
+                customerId = newUserId,
+                customerName = registerDto.fullName,
+                customerPhoneNumber = registerDto.phoneNumber,
+                customerIdentityNumber = hashedIdentityNumber,
+                userId = newUserId,
+            };
+
+            _context.User.Add(newUser);
+
+            var customerRoleId = "b1c2d3e4-f5a6-8901-2345-67890abcdef1";
+            
+            var userRole = new userRoleModel
+            {
+                userId = newUserId,
+                roleId = customerRoleId
+            };
+
+            _context.userRole.Add(userRole);
+
+            var customer = new customerModel
+            {
+                customerId = Guid.NewGuid().ToString(),
+                userId = newUserId,
+                customerName = registerDto.fullName,
+                customerPhoneNumber = registerDto.phoneNumber ?? string.Empty,
+                customerIdentityNumber = registerDto.address ?? string.Empty
+            };
+
+            _context.Customer.Add(customer);
+
+            await _context.SaveChangesAsync();
+
+            var userRoles = await _context.Role
+                .Where(r => r.roleId == customerRoleId)
+                .Select(r => r.roleName)
+                .ToArrayAsync();
+
+            return RegisterResult.Success(newUserId, registerDto.username, registerDto.fullName, userRoles);
+        }
+        catch (Exception ex)
+        {
+            return RegisterResult.Failure($"Registration failed: {ex.Message}");
         }
     }
 }
