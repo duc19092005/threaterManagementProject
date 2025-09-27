@@ -15,7 +15,8 @@ public class authMiddleware
     {
         var ignorePath = new List<string>()
         {
-            "/api/v1/Auth/login"
+            "/api/v1/Auth/login" ,
+            "/api/v1/Auth/GetVNPAYParams"
         };
         
         Console.WriteLine(context.Request.Path);

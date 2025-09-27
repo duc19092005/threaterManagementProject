@@ -11,6 +11,11 @@ public static class DIConfig
         services.AddScoped<JwtGeneratorHelper>();
         
         // Scope For Auth
+        
         services.AddScoped<IAuthService, AuthService>();
+        
+        // Scope For VNPAY Helper Class
+
+        services.AddScoped<generateVNPAYURLHelper>();
     }
 }

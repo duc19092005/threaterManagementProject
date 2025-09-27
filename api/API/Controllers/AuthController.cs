@@ -16,13 +16,17 @@ public class AuthController : ControllerBase
     // Get Services
     private readonly IAuthService _authService;
     
+    private readonly generateVNPAYURLHelper _generateVNPAYURLHelper;
+    
     private readonly JwtGeneratorHelper _jwtGeneratorHelper;
     
 
-    public AuthController(IAuthService authService , JwtGeneratorHelper jwtGeneratorHelper)
+    public AuthController(IAuthService authService , JwtGeneratorHelper jwtGeneratorHelper 
+    , generateVNPAYURLHelper generateVNPAYURLHelper)
     {
         this._authService = authService;
         this._jwtGeneratorHelper = jwtGeneratorHelper;
+        this._generateVNPAYURLHelper = generateVNPAYURLHelper;
     }
 
     [HttpPost("login")]
@@ -50,4 +54,13 @@ public class AuthController : ControllerBase
         }
         
     }
+
+    [HttpGet("GetVNPAYParams")]
+    public IActionResult GetVNPAYParams()
+    {
+        return Ok(_generateVNPAYURLHelper.generateVnpayURL
+        (Guid.NewGuid().ToString(), HttpContext.Request
+            .Host.Host, "Order cho don hang so", 20.0));
+    }
+    
 }
