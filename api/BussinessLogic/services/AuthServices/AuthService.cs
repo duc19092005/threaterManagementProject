@@ -1,3 +1,4 @@
+using System.Net;
 using System.Security.Authentication;
 using BussinessLogic.customException;
 using BussinessLogic.dtos;
@@ -6,16 +7,19 @@ using DataAccess.dbConnection;
 using DataAccess.model;
 using DevOne.Security.Cryptography.BCrypt;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BussinessLogic.services.AuthServices;
 
 public class AuthService : IAuthService
 {
     private readonly threaterManagementDbContext  _context;
+    private readonly ILogger<AuthService> Logger;
     private const string CustomerRoleId = "b1c2d3e4-f5a6-8901-2345-67890abcdef1";
-    public AuthService(threaterManagementDbContext context)
+    public AuthService(threaterManagementDbContext context , ILogger<AuthService> logger)
     {
         _context = context;
+        Logger = logger;
     }
     public async Task<AuthenticatedResult> LoginService(loginDto loginDto)
     {
@@ -60,59 +64,70 @@ public class AuthService : IAuthService
 
     public async Task<RegisterResult> RegisterService(registerDto registerDto)
      {
+         // Begin Transaction
+         var transaction = await _context.Database.BeginTransactionAsync();
          try
          {
              if (await _context.User.AnyAsync(u => u.username == registerDto.username))
-                 return RegisterResult.Failure("Username already exists");
-    
+                 return RegisterResult.Failure(409,"Username already exists");
+
              if (!string.IsNullOrWhiteSpace(registerDto.phoneNumber) &&
-                         await _context.Customer.AnyAsync(c => c.customerPhoneNumber == registerDto.phoneNumber))
-                 return RegisterResult.Failure("Phone number already exists");
-    
+                 await _context.Customer.AnyAsync(c => c.customerPhoneNumber == registerDto.phoneNumber))
+                 return RegisterResult.Failure(409,"Phone number already exists");
+
              var newUserId = Guid.NewGuid().ToString();
              var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerDto.password);
+             // Dùng thuật toán khác để mã hóa đi ông
              var hashedIdentityNumber = !string.IsNullOrWhiteSpace(registerDto.IdentityNumber)
-                         ? BCrypt.Net.BCrypt.HashPassword(registerDto.IdentityNumber)
-                         : null;
-    
+                 ? BCrypt.Net.BCrypt.HashPassword(registerDto.IdentityNumber)
+                 : null;
+
              var user = new userModel
              {
                  userId = newUserId,
                  username = registerDto.username,
                  password = hashedPassword
              };
-    
+
              var customer = new customerModel
              {
-                 customerId = Guid.NewGuid().ToString(), 
+                 customerId = Guid.NewGuid().ToString(),
                  userId = newUserId,
                  customerName = registerDto.fullName,
                  customerPhoneNumber = registerDto.phoneNumber ?? string.Empty,
                  customerIdentityNumber = hashedIdentityNumber ?? string.Empty,
              };
-    
+
              var userRole = new userRoleModel
              {
                  userId = newUserId,
                  roleId = CustomerRoleId
              };
-    
-             _context.User.Add(user);
-             _context.Customer.Add(customer);
-             _context.userRole.Add(userRole);
-    
+
+             await _context.User.AddAsync(user);
+             await _context.Customer.AddAsync(customer);
+             await _context.userRole.AddAsync(userRole);
+
              await _context.SaveChangesAsync();
-    
-             var userRoles = await _context.Role
-                        .Where(r => r.roleId == CustomerRoleId)
-                        .Select(r => r.roleName)
-                        .ToArrayAsync();
-    
-             return RegisterResult.Success(newUserId, registerDto.username, registerDto.fullName, userRoles);
+             await transaction.CommitAsync();
+
+
+             return RegisterResult.Success
+                 (200, "Registered Successfully");
+         }
+         catch (DbUpdateException dbEx)
+         {
+             await transaction.RollbackAsync();
+             Logger.LogError(dbEx.Message);
+             return RegisterResult.Failure(500, "Database Error");
          }
          catch (Exception ex)
          {
-             return RegisterResult.Failure($"Registration failed: {ex.Message}");
+             await transaction.RollbackAsync();
+
+             Logger.LogError(ex.Message);
+
+             return RegisterResult.Failure(500, "System Error Please Try Again Later");
          }
      }
 }

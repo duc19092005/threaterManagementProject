@@ -2,30 +2,24 @@ namespace BussinessLogic.Result;
 
 public class RegisterResult
 {
-    public string UserId { get; set; } = string.Empty;
-    public string Username { get; set; } = string.Empty;
-    public string FullName { get; set; } = string.Empty;
-    public string[] Roles { get; set; } = Array.Empty<string>();
+    public int statusCode { get; set; }
     public bool IsSuccess { get; set; }
     public string Message { get; set; } = string.Empty;
 
-    public RegisterResult(string userId, string username, string fullName, string[] roles, bool isSuccess, string message)
+    public RegisterResult(int statusCode, bool isSuccess, string message)
     {
-        UserId = userId;
-        Username = username;
-        FullName = fullName;
-        Roles = roles;
+        this.statusCode = statusCode;
         IsSuccess = isSuccess;
         Message = message;
     }
 
-    public static RegisterResult Success(string userId, string username, string fullName, string[] roles)
+    public static RegisterResult Success(int statusCode, string message)
     {
-        return new RegisterResult(userId, username, fullName, roles, true, "Registration successful");
+        return new RegisterResult(statusCode , true, message);
     }
 
-    public static RegisterResult Failure(string message)
+    public static RegisterResult Failure(int statusCode , string message)
     {
-        return new RegisterResult(string.Empty, string.Empty, string.Empty, Array.Empty<string>(), false, message);
+        return new RegisterResult(statusCode, false, message);
     }
 }
