@@ -16,10 +16,13 @@ public class AuthService : IAuthService
     private readonly threaterManagementDbContext  _context;
     private readonly ILogger<AuthService> Logger;
     private const string CustomerRoleId = "b1c2d3e4-f5a6-8901-2345-67890abcdef1";
-    public AuthService(threaterManagementDbContext context , ILogger<AuthService> logger)
+    private readonly AesGcmEncryption _crypto;
+
+    public AuthService(threaterManagementDbContext context , ILogger<AuthService> logger, AesGcmEncryption crypto)
     {
         _context = context;
         Logger = logger;
+        _crypto = crypto;
     }
     public async Task<AuthenticatedResult> LoginService(loginDto loginDto)
     {
@@ -77,12 +80,12 @@ public class AuthService : IAuthService
 
              var newUserId = Guid.NewGuid().ToString();
              var hashedPassword = BCrypt.Net.BCrypt.HashPassword(registerDto.password);
-             // Dùng thuật toán khác để mã hóa đi ông
-             var hashedIdentityNumber = !string.IsNullOrWhiteSpace(registerDto.IdentityNumber)
-                 ? BCrypt.Net.BCrypt.HashPassword(registerDto.IdentityNumber)
-                 : null;
+            // Dùng thuật toán khác để mã hóa đi ông
+            var encryptedIdentityNumber = !string.IsNullOrWhiteSpace(registerDto.IdentityNumber)
+                ? _crypto.Encrypt(registerDto.IdentityNumber)   // Mã hóa 2 chiều
+                : null;
 
-             var user = new userModel
+            var user = new userModel
              {
                  userId = newUserId,
                  username = registerDto.username,
@@ -95,7 +98,7 @@ public class AuthService : IAuthService
                  userId = newUserId,
                  customerName = registerDto.fullName,
                  customerPhoneNumber = registerDto.phoneNumber ?? string.Empty,
-                 customerIdentityNumber = hashedIdentityNumber ?? string.Empty,
+                 customerIdentityNumber = encryptedIdentityNumber ?? string.Empty,
              };
 
              var userRole = new userRoleModel

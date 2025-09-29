@@ -10,7 +10,6 @@ public class registerDto
     public string IdentityNumber { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "Username is required")]
-    [EmailAddress(ErrorMessage = "Username must be a valid email address")]
     public string username { get; set; } = string.Empty;
     
     [Required(ErrorMessage = "Password is required")]
