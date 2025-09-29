@@ -25,7 +25,7 @@ public class registerDto
     [StringLength(100, ErrorMessage = "Full name cannot exceed 100 characters")]
     public string fullName { get; set; } = string.Empty;
     
-    [RegularExpression("^0\\d{9}$\n" , ErrorMessage = "Phone Is Invalid")]
+    [RegularExpression(@"^0\d{9}$", ErrorMessage = "Phone Is Invalid")]
     public string? phoneNumber { get; set; }
     
     [StringLength(200, ErrorMessage = "Address cannot exceed 200 characters")]
