@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using BussinessLogic.customException;
 using BussinessLogic.dtos;
 using BussinessLogic.services.AuthServices;
+using BussinessLogic.Result;
 
 namespace backend.Controllers;
 
@@ -55,6 +56,20 @@ public class AuthController : ControllerBase
         
     }
 
+    [HttpPost("register")]
+    public async Task<IActionResult> Register(registerDto registerDto)
+    {
+        var registerResult = await _authService.RegisterService(registerDto);
+        
+        var Response = GenericResponse<RegisterResult>.GenericResponseFunction(
+            registerResult,
+            registerResult.IsSuccess ? new string[] { "Add Links Here" } :  new string[]{"Error"}
+        );
+
+        return HttpRequestResponse<RegisterResult>.checkingResponse(registerResult.statusCode,
+            Response);
+
+    }
     [HttpGet("GetVNPAYParams")]
     public IActionResult GetVNPAYParams()
     {
@@ -62,5 +77,4 @@ public class AuthController : ControllerBase
         (Guid.NewGuid().ToString(), HttpContext.Request
             .Host.Host, "Order cho don hang so", 20.0));
     }
-    
 }

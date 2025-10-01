@@ -1,6 +1,7 @@
 using backend.bootstrapping;
 using DataAccess.dbConnection;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -9,6 +10,10 @@ builder.Services.connectToDatabase(builder.Configuration);
 builder.Services.AddJwtConfig(builder.Configuration);
 // Add DI Config
 builder.Services.AddDIConfig();
+
+// Add AesGcmEncryption
+var key = Convert.FromBase64String(builder.Configuration["Crypto:Aes256KeyB64"]!);
+builder.Services.AddSingleton(new AesGcmEncryption(key));
 
 builder.Services.AddControllers();
 

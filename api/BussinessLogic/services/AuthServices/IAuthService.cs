@@ -9,7 +9,5 @@ public interface IAuthService
         loginDto loginDto
         );
 
-    // Add Register Response Services In Here
-
-
+    public Task<RegisterResult> RegisterService(registerDto registerDto);
 }
