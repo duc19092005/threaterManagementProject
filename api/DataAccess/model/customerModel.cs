@@ -6,6 +6,7 @@ namespace DataAccess.model;
 public class customerModel
 {
     [Key]
+    [Column(TypeName = "varchar(100)")]
     public string customerId { get; set; }
     
     [Required]
