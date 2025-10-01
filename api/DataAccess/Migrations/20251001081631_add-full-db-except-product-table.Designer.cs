@@ -4,6 +4,7 @@ using DataAccess.dbConnection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(threaterManagementDbContext))]
-    partial class threaterManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251001081631_add-full-db-except-product-table")]
+    partial class addfulldbexceptproducttable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,25 +62,6 @@ namespace DataAccess.Migrations
                     b.HasKey("movieGenreId");
 
                     b.ToTable("Genres");
-                });
-
-            modelBuilder.Entity("DataAccess.model.cinemaProductModel", b =>
-                {
-                    b.Property<string>("cinemaId")
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("productId")
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("productAmount")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("cinemaId", "productId");
-
-                    b.HasIndex("productId");
-
-                    b.ToTable("cinemaProductModel");
                 });
 
             modelBuilder.Entity("DataAccess.model.cinemaRoomModel", b =>
@@ -155,27 +139,6 @@ namespace DataAccess.Migrations
                     b.HasIndex("roleModelroleId");
 
                     b.ToTable("Discounts");
-                });
-
-            modelBuilder.Entity("DataAccess.model.foodOrderDetail", b =>
-                {
-                    b.Property<string>("orderId")
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("foodInformationId")
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<decimal>("PriceEach")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("quanlity")
-                        .HasColumnType("int");
-
-                    b.HasKey("orderId", "foodInformationId");
-
-                    b.HasIndex("foodInformationId");
-
-                    b.ToTable("FoodOrderDetails");
                 });
 
             modelBuilder.Entity("DataAccess.model.movieComment", b =>
@@ -381,31 +344,6 @@ namespace DataAccess.Migrations
                     b.HasKey("priceId");
 
                     b.ToTable("PriceForVisualFormats");
-                });
-
-            modelBuilder.Entity("DataAccess.model.productModel", b =>
-                {
-                    b.Property<string>("productId")
-                        .HasColumnType("varchar(100)");
-
-                    b.Property<string>("productDescription")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("productImage")
-                        .IsRequired()
-                        .HasColumnType("varchar(max)");
-
-                    b.Property<string>("productName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<decimal>("productPrice")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("productId");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("DataAccess.model.roleModel", b =>
@@ -626,25 +564,6 @@ namespace DataAccess.Migrations
                     b.ToTable("VisualFormats");
                 });
 
-            modelBuilder.Entity("DataAccess.model.cinemaProductModel", b =>
-                {
-                    b.HasOne("DataAccess.model.productModel", "productModel")
-                        .WithMany("cinemaProductModel")
-                        .HasForeignKey("cinemaId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccess.model.Cinema", "Cinema")
-                        .WithMany("cinemaProductModel")
-                        .HasForeignKey("productId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Cinema");
-
-                    b.Navigation("productModel");
-                });
-
             modelBuilder.Entity("DataAccess.model.cinemaRoomModel", b =>
                 {
                     b.HasOne("DataAccess.model.Cinema", "Cinema")
@@ -684,25 +603,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("roleModel");
-                });
-
-            modelBuilder.Entity("DataAccess.model.foodOrderDetail", b =>
-                {
-                    b.HasOne("DataAccess.model.productModel", "productModel")
-                        .WithMany()
-                        .HasForeignKey("foodInformationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DataAccess.model.orderModel", "orderModel")
-                        .WithMany("foodOrderDetail")
-                        .HasForeignKey("orderId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("orderModel");
-
-                    b.Navigation("productModel");
                 });
 
             modelBuilder.Entity("DataAccess.model.movieComment", b =>
@@ -894,8 +794,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("DataAccess.model.Cinema", b =>
                 {
-                    b.Navigation("cinemaProductModel");
-
                     b.Navigation("cinemaRoomModel");
 
                     b.Navigation("staffModel");
@@ -925,19 +823,9 @@ namespace DataAccess.Migrations
                     b.Navigation("ticketOrderDetail");
                 });
 
-            modelBuilder.Entity("DataAccess.model.orderModel", b =>
-                {
-                    b.Navigation("foodOrderDetail");
-                });
-
             modelBuilder.Entity("DataAccess.model.priceForVisualFormat", b =>
                 {
                     b.Navigation("movieVisualFormat");
-                });
-
-            modelBuilder.Entity("DataAccess.model.productModel", b =>
-                {
-                    b.Navigation("cinemaProductModel");
                 });
 
             modelBuilder.Entity("DataAccess.model.roleModel", b =>

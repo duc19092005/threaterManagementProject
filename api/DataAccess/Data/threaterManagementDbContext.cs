@@ -1,8 +1,7 @@
 using System.Data;
 using DataAccess.model;
-using DevOne.Security.Cryptography.BCrypt;
 using Microsoft.EntityFrameworkCore;
-using BCrypt.Net;
+// Bỏ DevOne.Security.Cryptography.BCrypt; và BCrypt.Net vì chúng không cần thiết cho DbContext
 
 namespace DataAccess.dbConnection;
 
@@ -22,17 +21,43 @@ public class threaterManagementDbContext : DbContext
         
     }
 
-    public  DbSet<userModel> User {get; set;}
-    
+    // =======================================================
+    // 🌟 KHAI BÁO DBSET CHO TẤT CẢ CÁC ENTITY TRONG THƯ MỤC MODEL 🌟
+    // =======================================================
+
+    public DbSet<userModel> User {get; set;}
     public DbSet<userRoleModel> userRole {get; set;} = null!;
-    
     public DbSet<roleModel> Role {get; set;} = null!;
-    
     public DbSet<customerModel> Customer {get; set;} = null!;
+    
+    // Các DbSet khác dựa trên hình ảnh
+    public DbSet<Cinema> Cinemas { get; set; } = null!;
+    public DbSet<cinemaRoomModel> CinemaRooms { get; set; } = null!;
+    public DbSet<discountModel> Discounts { get; set; } = null!;
+    public DbSet<Genre> Genres { get; set; } = null!;
+    public DbSet<movieComment> MovieComments { get; set; } = null!;
+    public DbSet<movieGenre> MovieGenres { get; set; } = null!;
+    public DbSet<movieInformation> MovieInformation { get; set; } = null!;
+    public DbSet<movieSchedule> MovieSchedules { get; set; } = null!;
+    public DbSet<movieVisualFormat> MovieVisualFormats { get; set; } = null!;
+    public DbSet<orderModel> Orders { get; set; } = null!;
+    public DbSet<priceForVisualFormat> PriceForVisualFormats { get; set; } = null!;
+    public DbSet<seatsModel> Seats { get; set; } = null!;
+    public DbSet<staffModel> Staff { get; set; } = null!;
+    public DbSet<ticketOrderDetail> TicketOrderDetails { get; set; } = null!;
+    public DbSet<typeofUserDiscountModel> TypeOfUserDiscounts { get; set; } = null!;
+    public DbSet<visualFormat> VisualFormats { get; set; } = null!;
+    public DbSet<productModel> Products { get; set; } = null!;
+    public DbSet<foodOrderDetail> FoodOrderDetails { get; set; } = null!;
+
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        base.OnModelCreating(modelBuilder); 
+        base.OnModelCreating(modelBuilder);
+        
+        // =======================================================
+        // 3. SEEDING DỮ LIỆU BAN ĐẦU
+        // =======================================================
         
         modelBuilder.Entity<roleModel>().HasData
             (
@@ -77,7 +102,8 @@ public class threaterManagementDbContext : DbContext
             {
                 userId = newUserId,
                 username = "duc19092005@email.com",
-                password = "$2a$12$PFeVPgS2ffEm1oY6OqldHutsGi0IJnMu3HCc6EUTS1RB32/cZNILy",
+                // Mật khẩu đã được hash sẵn
+                password = "$2a$12$PFeVPgS2ffEm1oY6OqldHutsGi0IJnMu3HCc6EUTS1RB32/cZNILy", 
             });
         // Add new User Role
         modelBuilder.Entity<userRoleModel>().HasData
