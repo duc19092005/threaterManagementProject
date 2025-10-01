@@ -17,6 +17,7 @@ public class authMiddleware
         {
             "/api/v1/Auth/login",
             "/api/v1/Auth/register",
+            "/api/v1/Auth/GetVNPAYParams"
         };
         
         Console.WriteLine(context.Request.Path);
