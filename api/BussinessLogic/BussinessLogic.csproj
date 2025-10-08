@@ -15,4 +15,10 @@
       <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Reference Include="Microsoft.AspNetCore.Http.Features">
+        <HintPath>..\..\..\..\..\..\.nuget\packages\microsoft.aspnetcore.app.ref\8.0.20\ref\net8.0\Microsoft.AspNetCore.Http.Features.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
