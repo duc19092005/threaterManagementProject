@@ -4,16 +4,21 @@ using BussinessLogic.validations.movieValidations;
 using DataAccess.dbConnection;
 using DataAccess.model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BussinessLogic.services.MovieServices;
 
 
 public class movieService : IMovieService
 {
+    // Tieem thêm ohaanf ILooger nữa cho dev fix 
     private readonly threaterManagementDbContext _context;
-    public movieService(threaterManagementDbContext context)
+    
+    private readonly ILogger<movieService> _logger;
+    public movieService(threaterManagementDbContext context , ILogger<movieService> logger)
     {
         this._context = context;
+        this._logger = logger;
     }
     public async Task<baseResultForCRUD> createMovie(dtos.movieDtos.createMovieDto createMovieDto)
     {
@@ -90,10 +95,15 @@ public class movieService : IMovieService
             catch (DbUpdateException dbUpdateException)
             {
                 // Database Error Return
+
+                await transaction.RollbackAsync();
+                _logger.LogError(dbUpdateException,"Lỗi update database :" + dbUpdateException.Message);
                 return baseResultForCRUD.failedStatus("Lỗi Khi Thêm Phim" , crudStatus.DatabaseError);
             }
             catch (Exception ex)
             {
+                await transaction.RollbackAsync();
+                _logger.LogError(ex,"Lỗi Hệ thống :" +  ex.Message);
                 return baseResultForCRUD.failedStatus("Lỗi hệ thống vui lòng thử lại sau", crudStatus.SystemError);
             }
         }
