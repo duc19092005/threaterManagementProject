@@ -1,3 +1,4 @@
+using BussinessLogic.Enums;
 using BussinessLogic.Result;
 using BussinessLogic.validations.movieValidations;
 using DataAccess.dbConnection;
@@ -22,7 +23,7 @@ public class movieService : IMovieService
 
         if (!getStatus.Item1 && getStatus.Item2 != null)
         {
-            return baseResultForCRUD.failedStatus(getStatus.Item2);
+            return baseResultForCRUD.failedStatus(getStatus.Item2 , getStatus.Item3);
         }
         
         // Giả sử bắt đầu làm phần thêm ảnh vào cloud
@@ -84,16 +85,16 @@ public class movieService : IMovieService
 
                 await transaction.CommitAsync();
 
-                return baseResultForCRUD.successStatus("Thêm phim thành công !");
+                return baseResultForCRUD.successStatus("Thêm phim thành công !" , getStatus.Item3);
             }
             catch (DbUpdateException dbUpdateException)
             {
                 // Database Error Return
-                return baseResultForCRUD.failedStatus("Lỗi Khi Thêm Phim");
+                return baseResultForCRUD.failedStatus("Lỗi Khi Thêm Phim" , crudStatus.DatabaseError);
             }
             catch (Exception ex)
             {
-                return baseResultForCRUD.failedStatus("Lỗi hệ thống vui lòng thử lại sau");
+                return baseResultForCRUD.failedStatus("Lỗi hệ thống vui lòng thử lại sau", crudStatus.SystemError);
             }
         }
     }
