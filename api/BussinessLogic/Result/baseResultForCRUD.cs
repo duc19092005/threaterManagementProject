@@ -8,7 +8,8 @@ public class baseResultForCRUD
     
     public baseResultForCRUD(bool status ,string message)
     {
-        
+        this.isSuccess = status;
+        this.message = message;
     }
 
     public static baseResultForCRUD successStatus(string msg )
