@@ -1,37 +1,30 @@
-services :
-  backend : 
-    build : ./api/backend
-    ports :
-      - "5000:5000"
-    volumes :
-      - backenddata:/var/opt/backendData
-    depends_on :
-      - mssql
-    networks :
-      - productionNetwork
-  frontend :
-    build : ./webfrontend
-    ports :
-      - "3000:3000"
-    volumes :
-      - frontenddata:/var/opt/frontendData
-    networks :
-      - productionNetwork
-  mssql :
-    image : mcr.microsoft.com/mssql/server:2019-latest
-    volumes : 
-      - sqldata:/var/opt/mssql
-    ports :
-      - "443:443"
-    environment :
-      - ACCEPT_EULA=Y
-      - SA_PASSWORD=anhduc9A@5
-    networks :
-      - productionNetwork
+services:
+  api:
+    build: ./CSDLPT_API
+    ports:
+      - "8080:8080"
+    networks:
+      - csdlpt_network
 
-networks:
-  productionNetwork:
+  web:
+    build: ./CSDLPT_DOAN
+    ports:
+      - "4000:4000"
+    networks:
+      - csdlpt_network
+
+  db:
+    image: mcr.microsoft.com/mssql/server:latest
+    ports:
+        - "1433:1433"
+    environment:
+        ACCEPT_EULA: Y
+        SA_PASSWORD : anhduc9A@5
+    volumes:
+        - db_data_csdlpt:/var/opt/mssql
+    networks:
+        - csdlpt_network
 volumes:
-  sqldata:
-  backenddata:
-  frontenddata:
+  db_data_csdlpt:
+networks:
+  csdlpt_network:
